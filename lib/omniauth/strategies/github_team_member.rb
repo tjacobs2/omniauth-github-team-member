@@ -19,9 +19,16 @@ module OmniAuth
       end
 
       def github_organization_member?
-		  #I should probably use this instead GET /orgs/:org/members/:user and check for a 204 status
-        organization_members = access_token.get("/orgs/RosettaCommons/members").parsed
-        !!organization_members.detect { |member| member['login'] == raw_info['login'] }
+        access_token.get("/orgs/RosettaCommons/members/" + raw_info['login']).status == 204
+        #$stdout.write "Response: " + is_member.to_s() + "\n"
+        #$stdout.write "Status: " + is_member.status.to_s() + "\n"
+        #$stdout.write "Header: " + is_member.header.to_s() + "\n"
+        
+        #organization_members = access_token.get("/orgs/RosettaCommons/members").parsed
+        #$stdout.write "LOGIN INFO RAW: " + raw_info['login'] + "\n"
+        #$stdout.write "Count: " + organization_members.count.to_s() + "\n"
+        #!!organization_members.detect { |member| member['login'] == raw_info['login'] }
+        #false
       rescue ::OAuth2::Error
         false
       end
